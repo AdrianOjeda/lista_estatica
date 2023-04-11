@@ -85,6 +85,38 @@ public:
         tamano = 0;
         cout << "La lista ha sido anulada. Todos los elementos han sido eliminados." << endl;
     }
+    void busquedaLineal(int elemento) {
+        bool bandera = false;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (elementos[i] == elemento) {
+                bandera = true;
+                cout << "El elemento se ecnuentra en la posicion: " << i;
+            }
+        }if (bandera == false) {
+            cout << "El elemento no se encuentra en la lista";
+        }
+        
+    }
+    int busquedaBinaria( int elemento) {
+        int left = 0;
+        int right = 10 - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (elementos[mid] == elemento) {
+                return mid;
+            }
+            else if (elementos[mid] < elemento) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+
+        return -1; //elemento no encontrado
+    }
 };
 
 int main() {
@@ -100,9 +132,12 @@ int main() {
         cout << "3. Insertar un elemento en la lista" << endl;
         cout << "4. Eliminar un elemento de la lista" << endl;
         cout << "5. Obtener el primer elemento de la lista" << endl;
-        cout << "6. Obtener el último elemento de la lista" << endl;
+        cout << "6. Obtener el ultimo elemento de la lista" << endl;
         cout << "7. Imprimir la lista" << endl;
         cout << "8. Anular la lista" << endl;
+        cout << "9. Buscar" << endl;
+        cout << "10. Ordenar" << endl;
+
         cin >> opcion;
         switch (opcion) {
         case 1: {
@@ -117,6 +152,9 @@ int main() {
             if (lista.estaLlena()) {
 
                 cout << "La lista esta llena!!" << endl;
+            }
+            else {
+                cout << "La lista no esta llena!!" << endl;
             }
             break;
         }case 3: {
@@ -149,7 +187,29 @@ int main() {
             cout << "*** Anular lista ***" << endl;
             lista.anular();
             break;
-        }default: {
+        }case 9: {
+            int opBusqueda, elemento;
+            cout << "Ingrese el elemento que desea buscar" << endl;
+            cin >> elemento;
+            cout << "Que metodo de busqueda desea utilizar?" << endl;
+            cout << "1. Lineal" << endl;
+            cout << "2. Binaria" << endl;
+            cin >> opBusqueda;
+            if (opBusqueda == 1) {
+                lista.busquedaLineal(elemento);
+
+            }
+            else if (opBusqueda == 2) {
+
+                lista.busquedaBinaria(elemento);
+            }
+            else {
+                cout << "Ingrese una opcion valida" << endl;
+
+            }
+            break;
+        }
+        default: {
             cout << "Ingresa una opcion valida!" << endl;
         }
         }

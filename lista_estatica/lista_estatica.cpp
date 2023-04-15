@@ -7,7 +7,9 @@ class ListaEstatica {
 private:
     int elementos[MAX_SIZE];
     int tamano;
+    
 public:
+    bool isSorted = false;
     ListaEstatica() {
         tamano = 0;
     }
@@ -117,6 +119,31 @@ public:
 
         return -1; //elemento no encontrado
     }
+    void bubbleSort() {
+
+
+        isSorted = true;
+    }void insertionSort() {
+
+
+        isSorted = true;
+    }void selectionSort() {
+
+
+        isSorted = true;
+    }void shellSort() {
+
+
+        isSorted = true;
+    }void mergeSort() {
+
+
+        isSorted = true;
+    }void quickSort() {
+
+
+        isSorted = true;
+    }
 };
 
 int main() {
@@ -200,14 +227,61 @@ int main() {
 
             }
             else if (opBusqueda == 2) {
+                if (lista.isSorted == true) {
+                    lista.busquedaBinaria(elemento);
 
-                lista.busquedaBinaria(elemento);
+                }
+                else {
+                    cout << "La lista no esta ordenada, debe ordenarla primero" << endl;
+                }
+                
             }
             else {
                 cout << "Ingrese una opcion valida" << endl;
 
             }
             break;
+        }case 10: {
+            int ordenamiento;
+            cout << "*** Ordenar ***" << endl;
+            cout << "1. Bubble-sort" << endl;
+            cout << "2. Insertion-Sort" << endl;
+            cout << "3. Selection-Sort" << endl;
+            cout << "4. Shell-sort" << endl;
+            cout << "5. Merge-Sort" << endl;
+            cout << "6. Quick-Sort" << endl;
+            cin >> ordenamiento;
+            switch (ordenamiento) {
+            case 1: {
+                lista.bubbleSort();
+                break;
+            }case 2: {
+                lista.insertionSort();
+                break;
+            }case 3: {
+                lista.selectionSort();
+
+                break;
+            }case 4: {
+                lista.shellSort();
+
+                break;
+            }case 5: {
+                lista.mergeSort();
+
+                break;
+            }case 6: {
+                lista.quickSort();
+
+                break;
+            }default: {
+
+                cout << "Ingrese una opcion valida" << endl;
+                break;
+            }
+
+            }
+
         }
         default: {
             cout << "Ingresa una opcion valida!" << endl;

@@ -1,14 +1,15 @@
 #include <iostream>
+#include <iostream>
 using namespace std;
 
 const int MAX_SIZE = 10;
 
 class ListaEstatica {
 private:
-    int elementos[MAX_SIZE];
     int tamano;
     
 public:
+    int elementos[MAX_SIZE];
     bool isSorted = false;
     ListaEstatica() {
         tamano = 0;
@@ -120,26 +121,179 @@ public:
         return -1; //elemento no encontrado
     }
     void bubbleSort() {
+        for (int step = 0; step < MAX_SIZE; ++step) {
 
+            
+            for (int i = 0; i < MAX_SIZE - step; ++i) {
 
+                
+                if (elementos[i] > elementos[i + 1]) {
+
+                    
+                    int temp = elementos[i];
+                    elementos[i] = elementos[i + 1];
+                    elementos[i + 1] = temp;
+                }
+            }
+        }
+        cout << "Lista ordenada con exito!" << endl;
         isSorted = true;
     }void insertionSort() {
-
-
+        int aux;
+        for (int i = 1; i < MAX_SIZE; i++) {
+            aux = elementos[i];
+            int j;
+            for (j = i - 1; j >= 0 && aux < elementos[j]; j--) {
+                elementos[j + 1] = elementos[j];
+            }
+            elementos[j + 1] = aux;
+            cout << endl;
+            
+        }
+        cout << "Lista ordenada con exito!" << endl;
         isSorted = true;
     }void selectionSort() {
+        int aux;
+        int position;
+
+        cout << endl;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            cout << elementos[i] << " ";
+        }
+        for (int i = 0; i < MAX_SIZE; i++) {
+            position = i;
+            for (int j = i + 1; j < MAX_SIZE; j++) {
+                if (elementos[position] > elementos[j]) {
+                    position = j;
+
+                }
 
 
+            }
+
+            aux = elementos[i];
+            elementos[i] = elementos[position];
+            elementos[position] = aux;
+        }
+        cout << "Lista ordenada con exito!" << endl;
         isSorted = true;
     }void shellSort() {
 
+        for (int interval = MAX_SIZE / 2; interval > 0; interval /= 2) {
+            for (int i = interval; i < MAX_SIZE; i += 1) {
+                int temp = elementos[i];
+                int j;
+                for (j = i; j >= interval && elementos[j - interval] > temp; j -= interval) {
+                    elementos[j] = elementos[j - interval];
+                }
+                elementos[j] = temp;
+            }
+        }
 
+
+        cout << "Lista ordenada con exito!" << endl;
         isSorted = true;
-    }void mergeSort() {
+    }void merge(int elementos[], int p, int q, int r) {
+
+        
+        int n1 = q - p + 1;
+        int n2 = r - q;
+
+        int* L = new int[n1];
+        int* M = new int[n2];
 
 
+        for (int i = 0; i < n1; i++)
+            L[i] = elementos[p + i];
+        for (int j = 0; j < n2; j++)
+            M[j] = elementos[q + 1 + j];
+
+        
+        int i, j, k;
+        i = 0;
+        j = 0;
+        k = p;
+
+        while (i < n1 && j < n2) {
+            if (L[i] <= M[j]) {
+                elementos[k] = L[i];
+                i++;
+            }
+            else {
+                elementos[k] = M[j];
+                j++;
+            }
+            k++;
+        }
+
+        
+        while (i < n1) {
+            elementos[k] = L[i];
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            elementos[k] = M[j];
+            j++;
+            k++;
+        }
+    }void mergeSort(int elementos[], int l, int r) {
+        if (l < r) {
+            
+            int m = l + (r - l) / 2;
+
+            mergeSort(elementos, l, m);
+            mergeSort(elementos, m + 1, r);
+
+           
+            merge(elementos, l, m, r);
+        }
+        
         isSorted = true;
-    }void quickSort() {
+    }
+    void swap(int* a, int* b) {
+        int t = *a;
+        *a = *b;
+        *b = t;
+    }
+    
+    int partition(int elementos[], int low, int high) {
+
+        
+        int pivot = elementos[high];
+
+       
+        int i = (low - 1);
+
+        
+        for (int j = low; j < high; j++) {
+            if (elementos[j] <= pivot) {
+
+                i++;
+
+                swap(&elementos[i], &elementos[j]);
+            }
+        }
+
+        
+        swap(&elementos[i + 1], &elementos[high]);
+
+        return (i + 1);
+    }
+
+    void quickSort(int elementos[], int low, int high) {
+        if (low < high) {
+
+            
+            int pi = partition(elementos, low, high);
+
+            
+            quickSort(elementos, low, pi - 1);
+
+            
+            quickSort(elementos, pi + 1, high);
+        }
 
 
         isSorted = true;
@@ -150,7 +304,9 @@ int main() {
     ListaEstatica lista;
     int opcion, valor, posicion;
     char opt;
-
+    for (int i = 0; i < 15; i++) {
+        lista.insertar(rand(), i);
+    }
     do {
         cout << endl;
         cout << "Seleccione una opcion:" << endl;
@@ -215,6 +371,7 @@ int main() {
             lista.anular();
             break;
         }case 9: {
+            if (lista.estaVacia() == false) {
             int opBusqueda, elemento;
             cout << "Ingrese el elemento que desea buscar" << endl;
             cin >> elemento;
@@ -240,8 +397,15 @@ int main() {
                 cout << "Ingrese una opcion valida" << endl;
 
             }
+
+
+            }
+            else {
+                cout << "La lista esta vacia" << endl;
+            }
             break;
         }case 10: {
+            if (lista.estaVacia() == false) {
             int ordenamiento;
             cout << "*** Ordenar ***" << endl;
             cout << "1. Bubble-sort" << endl;
@@ -267,12 +431,12 @@ int main() {
 
                 break;
             }case 5: {
-                lista.mergeSort();
-
+                lista.mergeSort(lista.elementos, 0, MAX_SIZE-1);
+                cout << "Lista ordenada con exito!" << endl;
                 break;
             }case 6: {
-                lista.quickSort();
-
+                lista.quickSort(lista.elementos, 0, MAX_SIZE-1);
+                cout << "Lista ordenada con exito!" << endl;
                 break;
             }default: {
 
@@ -282,6 +446,12 @@ int main() {
 
             }
 
+
+            }
+            else {
+                cout << "La lista esta vacia" << endl;
+            }
+            break;
         }
         default: {
             cout << "Ingresa una opcion valida!" << endl;
